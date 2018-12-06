@@ -19,20 +19,20 @@ export default class TreeSelect extends React.Component {
         isVisible: false,
         confirmText: 'Confirm',
         cancelText: 'Cancel',
-    }
+    };
 
     static propTypes = {
         ...Tree.propTypes,
         isVisible: PropTypes.bool,
         onCancel: PropTypes.func,
-        onComfirm: PropTypes.func,
+        onConfirm: PropTypes.func,
         confirmText: PropTypes.string,
         cancelText: PropTypes.string,
-    }
+    };
 
     state = {
         isVisible: false,
-    }
+    };
 
     shouldComponentUpdate(nextProps, nextState) {
         return nextState.isVisible !== this.state.isVisible;
@@ -40,20 +40,20 @@ export default class TreeSelect extends React.Component {
 
     open = () => {
         this.setState({ isVisible: true });
-    }
+    };
 
     close = () => {
         this.setState({ isVisible: false });
-    }
+    };
 
     onOk = () => {
         const selectedValue = this.treeRef.getSelectValue();
-        this.props.onComfirm(selectedValue);
+        this.props.onConfirm(selectedValue);
         this.close();
-    }
+    };
 
     render() {
-        const { onComfirm, ...rest } = this.props;
+        const { onConfirm, ...rest } = this.props;
 
         return (
             <Modal

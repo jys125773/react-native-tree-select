@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
 } from 'react-native';
-const TochableFeedback = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+const TouchableFeedback = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
 const checkIconNames = ['square-o', 'minus-square', 'check-square'];
 
 export default class TreeNode extends React.Component {
@@ -23,7 +23,7 @@ export default class TreeNode extends React.Component {
       check, expanded, onExpand, onSelect, multiple, onlyCheckLeaf, predecessorsCount,
       nodeData, nodeData: { key, label, children },
     } = this.props;
-    const Tochable = hasChildren ? TouchableWithoutFeedback : TochableFeedback;
+    const Touchable = hasChildren ? TouchableWithoutFeedback : TouchableFeedback;
     const hasChildren = !!children;
     const checkable = multiple || !onlyCheckLeaf || onlyCheckLeaf && !hasChildren;
 
@@ -33,9 +33,9 @@ export default class TreeNode extends React.Component {
         { paddingLeft: predecessorsCount * 10 },
         !hasChildren && { backgroundColor: 'rgb(240,240,240)' },
       ]}>
-        <Tochable
+        <Touchable
           onPress={() => checkable && onSelect(nodeData, check)}
-          style={styles.tochable}>
+          style={styles.touchable}>
           <View style={styles.icons}>
             {hasChildren && <Icon
               name={expanded ? 'caret-down' : 'caret-right'}
@@ -47,7 +47,7 @@ export default class TreeNode extends React.Component {
               style={styles.checkIcon} />}
             <Text style={styles.label}>{label}</Text>
           </View>
-        </Tochable>
+        </Touchable>
         {hasChildren && <Icon
           onPress={() => hasChildren && onExpand(key, expanded)}
           name={expanded ? 'chevron-down' : 'chevron-up'}
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     marginRight: 6,
   },
-  tochable: {
+  touchable: {
     flex: 1,
   },
   label: {
