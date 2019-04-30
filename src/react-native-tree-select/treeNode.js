@@ -21,11 +21,12 @@ export default class TreeNode extends React.Component {
   render() {
     const {
       check, expanded, onExpand, onSelect, multiple, onlyCheckLeaf, predecessorsCount,
-      nodeData, nodeData: { key, label, children },
+      nodeData, nodeData: { key, label, children, disabled },
     } = this.props;
-    const Touchable = hasChildren ? TouchableWithoutFeedback : TouchableFeedback;
+    let Touchable = hasChildren ? TouchableWithoutFeedback : TouchableFeedback;
     const hasChildren = !!children;
     const checkable = multiple || !onlyCheckLeaf || onlyCheckLeaf && !hasChildren;
+    Touchable = disabled ? View : Touchable;
 
     return (
       <View style={[
