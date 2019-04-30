@@ -21,7 +21,7 @@ export default class TreeNode extends React.Component {
   render() {
     const {
       check, expanded, onExpand, onSelect, multiple, onlyCheckLeaf, predecessorsCount,
-      nodeData, nodeData: { key, label, children, disabled },
+      nodeData, nodeData: { key, label, children, disabled, notCheckable },
     } = this.props;
     let Touchable = hasChildren ? TouchableWithoutFeedback : TouchableFeedback;
     const hasChildren = !!children;
@@ -32,7 +32,7 @@ export default class TreeNode extends React.Component {
       <View style={[
         styles.container,
         { paddingLeft: predecessorsCount * 10 },
-        !hasChildren && { backgroundColor: 'rgb(240,240,240)' },
+        !hasChildren && { backgroundColor: 'rgb(248,248,248)' },
       ]}>
         <Touchable
           onPress={() => checkable && onSelect(nodeData, check)}
@@ -45,8 +45,8 @@ export default class TreeNode extends React.Component {
             {checkable && <Icon
               name={checkIconNames[check || 0]}
               size={16}
-              style={styles.checkIcon} />}
-            <Text style={styles.label}>{label}</Text>
+              style={[styles.checkIcon, notCheckable ? {color:'#626262'} : {}]} />}
+            <Text style={[styles.label, disabled ? {color:'#626262'} : {}]}>{label}</Text>
           </View>
         </Touchable>
         {hasChildren && <Icon
