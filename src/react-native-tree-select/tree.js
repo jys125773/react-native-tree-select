@@ -185,15 +185,24 @@ export default class TreeSelect extends React.Component {
     return children.map((nodeData) => {
       const { key, label, children } = nodeData;
 
-      return (
+      if (parentExpanded) {
+        return (
+          <View key={key} style={{
+            height: parentExpanded ? 'auto' : 0,
+            overflow: 'hidden',
+          }}>
+            {this.renderNode(nodeData)}
+            {children && this.renderTree(children, expandedMap[key])}
+          </View>
+        );
+      } else {
         <View key={key} style={{
           height: parentExpanded ? 'auto' : 0,
           overflow: 'hidden',
         }}>
           {this.renderNode(nodeData)}
-          {children && this.renderTree(children, expandedMap[key])}
         </View>
-      );
+      }
     });
   }
 
