@@ -21,6 +21,7 @@
       key: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       disabled: PropTypes.bool,
+      notCheckable: PropTypes.bool,
       children: PropTypes.array,
     })).isRequired
   }

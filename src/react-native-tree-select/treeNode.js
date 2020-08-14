@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
 } from 'react-native';
-const TochableFeedback = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
+const TouchableFeedback = Platform.OS === 'ios' ? TouchableOpacity : TouchableNativeFeedback;
 const checkIconNames = ['square-o', 'minus-square', 'check-square'];
 
 export default class TreeNode extends React.Component {
@@ -21,21 +21,22 @@ export default class TreeNode extends React.Component {
   render() {
     const {
       check, expanded, onExpand, onSelect, multiple, onlyCheckLeaf, predecessorsCount,
-      nodeData, nodeData: { key, label, children },
+      nodeData, nodeData: { key, label, children, disabled, notCheckable },
     } = this.props;
-    const Tochable = hasChildren ? TouchableWithoutFeedback : TochableFeedback;
+    let Touchable = hasChildren ? TouchableWithoutFeedback : TouchableFeedback;
     const hasChildren = !!children;
     const checkable = multiple || !onlyCheckLeaf || onlyCheckLeaf && !hasChildren;
+    Touchable = disabled ? View : Touchable;
 
     return (
       <View style={[
         styles.container,
         { paddingLeft: predecessorsCount * 10 },
-        !hasChildren && { backgroundColor: 'rgb(240,240,240)' },
+        !hasChildren && { backgroundColor: 'rgb(248,248,248)' },
       ]}>
-        <Tochable
+        <Touchable
           onPress={() => checkable && onSelect(nodeData, check)}
-          style={styles.tochable}>
+          style={styles.touchable}>
           <View style={styles.icons}>
             {hasChildren && <Icon
               name={expanded ? 'caret-down' : 'caret-right'}
@@ -44,10 +45,10 @@ export default class TreeNode extends React.Component {
             {checkable && <Icon
               name={checkIconNames[check || 0]}
               size={16}
-              style={styles.checkIcon} />}
-            <Text style={styles.label}>{label}</Text>
+              style={[styles.checkIcon, notCheckable ? {color:'#626262'} : {}]} />}
+            <Text style={[styles.label, disabled ? {color:'#626262'} : {}]}>{label}</Text>
           </View>
-        </Tochable>
+        </Touchable>
         {hasChildren && <Icon
           onPress={() => hasChildren && onExpand(key, expanded)}
           name={expanded ? 'chevron-down' : 'chevron-up'}
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
     marginLeft: 6,
     marginRight: 6,
   },
-  tochable: {
+  touchable: {
     flex: 1,
   },
   label: {

@@ -82,7 +82,7 @@ export default class App extends React.Component {
           title="Open TreeSelect" />
         <TreeSelect
           ref={node => this.treeSelectRef = node}
-          onComfirm={(value) => {
+          onConfirm={(value) => {
             this.setState({ value });
           }}
           value={this.state.value}

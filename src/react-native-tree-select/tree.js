@@ -36,6 +36,7 @@ export default class TreeSelect extends React.Component {
       key: PropTypes.string.isRequired,
       label: PropTypes.string.isRequired,
       disabled: PropTypes.bool,
+      notCheckable: PropTypes.bool,
       children: PropTypes.array,
     })).isRequired
   }
@@ -102,17 +103,17 @@ export default class TreeSelect extends React.Component {
     const { multiple } = this.props;
     const { expandedMap: preExpandedMap } = this.state;
     const { predecessorsOfNodeMap, ownedLeafNodesMap } = this;
-    const { key, children } = node;
+    const { key, children, notCheckable } = node;
     const predecessors = predecessorsOfNodeMap[key];
     const hasChildren = !!children;
-    const nextCheck = check ? 0 : 2;
+    const nextCheck = check ? 0 : (notCheckable ? 0 : 2);
     const updatedSubKeys = { [key]: nextCheck };
 
     let selectedKeysMap = updatedSubKeys;
     if (multiple) {
       hasChildren && Utils.traverseTree(children, (node) => {
-        const { key, children } = node;
-        updatedSubKeys[key] = nextCheck;
+        const { key, children, notCheckable } = node;
+        updatedSubKeys[key] = notCheckable ? 0 : nextCheck;
       });
       selectedKeysMap = { ...this.state.selectedKeysMap, ...updatedSubKeys };
 
@@ -184,15 +185,24 @@ export default class TreeSelect extends React.Component {
     return children.map((nodeData) => {
       const { key, label, children } = nodeData;
 
-      return (
+      if (parentExpanded) {
+        return (
+          <View key={key} style={{
+            height: parentExpanded ? 'auto' : 0,
+            overflow: 'hidden',
+          }}>
+            {this.renderNode(nodeData)}
+            {children && this.renderTree(children, expandedMap[key])}
+          </View>
+        );
+      } else {
         <View key={key} style={{
           height: parentExpanded ? 'auto' : 0,
           overflow: 'hidden',
         }}>
           {this.renderNode(nodeData)}
-          {children && this.renderTree(children, expandedMap[key])}
         </View>
-      );
+      }
     });
   }
 
